@@ -12,14 +12,18 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/ProductListingServlet")
 public class ProductListingServlet extends HttpServlet {
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
+        // Use the DAO instance
         ProductDAO dao = new ProductDAO();
-        List<Product> products = dao.getAllProducts(); // Now returns List<Product>
+        
+        // Fetch List<Product> instead of Map
+        List<Product> products = dao.getAllProducts();
 
         request.setAttribute("products", products);
-        request.getRequestDispatcher("productListings.jsp").forward(request, response);
+        request.getRequestDispatcher("productListing.jsp").forward(request, response);
     }
 }

@@ -18,7 +18,6 @@ public class SellServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        // 1. Check if user is logged in
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("loggedUser");
         
@@ -27,38 +26,37 @@ public class SellServlet extends HttpServlet {
             return;
         }
         
-        // 2. Retrieve form data
-        String title = request.getParameter("title");
-        double price = Double.parseDouble(request.getParameter("price"));
-        String categoryStr = request.getParameter("category");
-        String size = request.getParameter("size");
-        String condition = request.getParameter("condition");
-        String img = request.getParameter("img");
-        String desc = request.getParameter("desc");
-        
-        int categoryId = 1; // Default
-        try { categoryId = Integer.parseInt(categoryStr); } catch(Exception e){}
+        try {
+            // Retrieve form data
+            String title = request.getParameter("title");
+            double price = Double.parseDouble(request.getParameter("price"));
+            int categoryId = Integer.parseInt(request.getParameter("category"));
+            String size = request.getParameter("size");
+            String condition = request.getParameter("condition");
+            String img = request.getParameter("img");
+            String desc = request.getParameter("desc");
 
-        // 3. Create Product Object
-        Product p = new Product();
-        p.setUserId(user.getUserId()); // Link to logged-in user
-        p.setTitle(title);
-        p.setPrice(price);
-        p.setCategoryId(categoryId);
-        p.setSize(size);
-        p.setCondition(condition);
-        p.setImageUrl(img);
-        p.setDescription(desc);
-        
-        // 4. Save to DB
-        ProductDAO dao = new ProductDAO();
-        boolean success = dao.addProduct(p);
-        
-        if (success) {
-            response.sendRedirect("home?status=listed");
-        } else {
-            request.setAttribute("error", "Failed to list item. Try again.");
-            request.getRequestDispatcher("sell.jsp").forward(request, response);
+            // Create Product Bean
+            Product p = new Product();
+            p.setUserId(user.getUserId());
+            p.setTitle(title);
+            p.setPrice(price);
+            p.setCategoryId(categoryId);
+            p.setSize(size);
+            p.setCondition(condition);
+            p.setImageUrl(img);
+            p.setDescription(desc);
+            
+            // Save using DAO
+            ProductDAO dao = new ProductDAO();
+            if(dao.addProduct(p)) {
+                response.sendRedirect("ProductListingServlet"); // Success
+            } else {
+                response.sendRedirect("sell.jsp?error=database");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendRedirect("sell.jsp?error=input");
         }
     }
 }
