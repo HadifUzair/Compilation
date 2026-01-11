@@ -1,4 +1,4 @@
-<%@page import="model.User"%>
+<%@page import="com.marketplace.models.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     // Security: Check if user is logged in
