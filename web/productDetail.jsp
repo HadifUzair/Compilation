@@ -6,13 +6,9 @@
   <title>Marketplace — Product Detail</title>
 
   <style>
-    /* :root block removed to fix NetBeans token errors */
-    
     body{
       margin: 0;
-      /* Replaced var(--purple-1) and var(--purple-2) */
       background: linear-gradient(180deg, #6b1dbb, #7b2bd6);
-      /* Moved font-family from root to body */
       font-family: Arial, Helvetica, sans-serif;
     }
     header{
@@ -37,7 +33,6 @@
       height: 300px;
       object-fit: cover;
       border-radius: 8px;
-      /* Replaced var(--card-border) */
       border: 1px solid #eae6f6;
     }
     .price{
@@ -45,35 +40,54 @@
       font-weight: bold;
       font-size: 20px;
     }
+    /* Simple button style */
+    button {
+        background-color: #6b1dbb;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 10px;
+    }
+    button:hover {
+        background-color: #5a189a;
+    }
   </style>
 </head>
 
 <body>
 
-<header>
-  <div><b>UiTMMarketplace</b></div>
-</header>
+    <jsp:include page="navbar.jsp" />
 
-<div class="container">
-  <div class="detail">
+    <div class="container">
+      <div class="detail">
 
-    <div class="thumb">
-      <img src="${product.img}" alt="Product Image">
+        <div class="thumb">
+          <img src="${product.imageUrl}" alt="${product.title}" onerror="this.src='https://via.placeholder.com/300'">
+        </div>
+
+        <div class="info">
+          <h2>${product.title}</h2>
+          <div class="price">RM ${product.price}</div>
+          
+          <p>${product.description}</p>
+
+          <p><strong>Size:</strong> ${product.size}</p>
+          <p><strong>Condition:</strong> ${product.condition}</p>
+          <p><strong>Status:</strong> ${product.status}</p>
+
+          <form action="CartServlet" method="post">
+              <input type="hidden" name="action" value="add">
+              <input type="hidden" name="productId" value="${product.productId}">
+              <button type="submit">Add to Cart</button>
+          </form>
+          
+        </div>
+
+      </div>
     </div>
-
-    <div class="info">
-      <h2>${product.title}</h2>
-      <div class="price">RM ${product.price}</div>
-      <p>${product.desc}</p>
-
-      <p>Size: ${product.size}</p>
-      <p>Sold: ${product.sold}</p>
-
-      <button>Add to Cart</button>
-    </div>
-
-  </div>
-</div>
 
 </body>
 </html>

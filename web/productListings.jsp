@@ -1,5 +1,5 @@
+<%@page import="com.marketplace.models.Product"%>
 <%@page import="java.util.List"%>
-<%@page import="java.util.Map"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!doctype html>
 <html lang="en">
@@ -36,24 +36,19 @@
             <section class="catalog">
                 <div class="grid" id="grid">
                     <%
-                        // Retrieve the list of maps from the request attribute
-                        List<Map<String, Object>> products = (List<Map<String, Object>>) request.getAttribute("products");
+                        // 1. Retrieve the list of Product objects
+                        List<Product> products = (List<Product>) request.getAttribute("products");
 
-                        // Check if list is valid to prevent errors
+                        // 2. Check if list is valid
                         if (products != null && !products.isEmpty()) {
-                            for (Map<String, Object> p : products) {
-                                // Extract values safely
-                                int id = (Integer) p.get("id");
-                                String title = (String) p.get("title");
-                                double price = (Double) p.get("price");
-                                String img = (String) p.get("img");
+                            for (Product p : products) {
                     %>
-                        <a class="card" href="ProductDetailServlet?id=<%= id %>">
+                        <a class="card" href="ProductDetailServlet?id=<%= p.getProductId() %>">
                             <div class="thumb">
-                                <img src="<%= img %>" alt="<%= title %>" onerror="this.src='https://via.placeholder.com/150'">
+                                <img src="<%= p.getImageUrl() %>" alt="<%= p.getTitle() %>" onerror="this.src='https://via.placeholder.com/150'">
                             </div>
-                            <div class="title"><%= title %></div>
-                            <div class="price">RM <%= String.format("%.2f", price) %></div>
+                            <div class="title"><%= p.getTitle() %></div>
+                            <div class="price">RM <%= String.format("%.2f", p.getPrice()) %></div>
                         </a>
                     <%
                             }
