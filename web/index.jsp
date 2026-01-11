@@ -13,7 +13,7 @@
     <header class="hero">
         <h1>Buy, Sell & Trade on Campus</h1>
         <p>The exclusive marketplace for students. Safe, fast, and local.</p>
-        <a href="shopping.jsp" class="btn-cta">Browse Items</a>
+        <a href="ProductListingServlet" class="btn-cta">Browse Items</a>
     </header>
 
     <footer>

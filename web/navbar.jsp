@@ -4,8 +4,8 @@
     </div>
     <ul class="nav-links">
         <li><a href="index.jsp">Home</a></li>
-        <li><a href="productListings.jsp">Shop</a></li>
-        <li><a href="cart.jsp">Cart</a></li>
+        <a href="ProductListingServlet">Shop</a>
+        <li><a href="CartServlet">Cart</a></li>
         <%-- Link to the Servlet, not the JSP directly --%>
                 <% if(session.getAttribute("loggedUser") != null) { %>
             <li><a href="sell.jsp" style="color: #ffbf00; font-weight:bold;">+ Sell</a></li>

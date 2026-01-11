@@ -33,7 +33,7 @@
             <div class="empty-cart" style="text-align: center; padding: 40px;">
                 <h3>Your cart is empty</h3>
                 <p>Add some items from the marketplace!</p>
-                <a href="shopping.jsp" class="btn-submit">Continue Shopping</a>
+                <a href="ProductListingServlet" class="btn-submit">Continue Shopping</a>
             </div>
         <% } else { %>
             <div class="table-responsive">
