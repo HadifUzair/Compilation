@@ -1,34 +1,24 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.marketplace.dao;
-
-/**
- *
- * @author user
- */
 
 import com.marketplace.models.User;
 import com.marketplace.util.DBConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.ResultSet;
 
 public class UserDAO {
     
+    // Existing method
     public boolean updateProfile(User user) {
-        // Matches SQL Schema: users table
         String sql = "UPDATE users SET email=?, phone_number=?, address=? WHERE student_id=?";
-        
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             
             ps.setString(1, user.getEmail());
             ps.setString(2, user.getPhoneNumber());
             ps.setString(3, user.getAddress());
-            ps.setString(4, user.getStudentId()); // Using Student ID as unique key
+            ps.setString(4, user.getStudentId());
             
             int rowsUpdated = ps.executeUpdate();
             return rowsUpdated > 0;
@@ -37,5 +27,56 @@ public class UserDAO {
             e.printStackTrace();
             return false;
         }
+    }
+
+    // NEW METHOD: Register User
+    public boolean registerUser(User user) {
+        String sql = "INSERT INTO users (student_id, full_name, email, password, created_at) "
+                   + "VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)";
+        
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ps.setString(1, user.getStudentId());
+            ps.setString(2, user.getFullName());
+            ps.setString(3, user.getEmail());
+            ps.setString(4, user.getPassword());
+            
+            int rowsInserted = ps.executeUpdate();
+            return rowsInserted > 0;
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    public User loginUser(String email, String password) {
+        String sql = "SELECT * FROM users WHERE email = ? AND password = ?";
+        User user = null;
+        
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ps.setString(1, email);
+            ps.setString(2, password);
+            
+            ResultSet rs = ps.executeQuery();
+            
+            if (rs.next()) {
+                user = new User();
+                user.setUserId(rs.getInt("user_id"));
+                user.setStudentId(rs.getString("student_id"));
+                user.setFullName(rs.getString("full_name"));
+                user.setEmail(rs.getString("email"));
+                user.setPassword(rs.getString("password"));
+                user.setPhoneNumber(rs.getString("phone_number"));
+                user.setAddress(rs.getString("address"));
+                // created_at is optional for session
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
     }
 }
