@@ -41,7 +41,7 @@
                                         ${order.status}
                                     </span>
                                 </td>
-                                <td><a href="ViewOrder?id=${order.orderId}" style="color: var(--primary-purple); font-weight: bold;">View Details</a></td>
+                                <td><a href="ViewOrder?id=${order.orderId}" style="color: #6a0dad; font-weight: bold;">View Details</a></td>
                             </tr>
                         </c:forEach>
                         

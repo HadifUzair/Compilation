@@ -1,33 +1,25 @@
 package com.marketplace.dao;
 
 import com.marketplace.models.CartBean;
+import com.marketplace.util.DBConnection;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CartDAO {
     
-    private Connection getConnection() throws SQLException {
-        try {
-            Class.forName("org.apache.derby.jdbc.ClientDriver");
-            return DriverManager.getConnection(
-                "jdbc:derby://localhost:1527/Ujek", "app", "app");
-        } catch (ClassNotFoundException e) {
-            throw new SQLException("Database driver not found", e);
-        }
-    }
-    
     // Get user's cart items
     public List<CartBean> getCartItems(int userId) throws SQLException {
         List<CartBean> cartItems = new ArrayList<>();
         
+        // Matches schema: products table has title, price, image_url, product_size
         String sql = "SELECT c.cart_id, c.product_id, c.quantity, "
                    + "p.title, p.price, p.image_url, p.product_size "
                    + "FROM cart c "
                    + "JOIN products p ON c.product_id = p.product_id "
                    + "WHERE c.user_id = ? AND p.status = 'Available'";
         
-        try (Connection conn = getConnection();
+        try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
             stmt.setInt(1, userId);
@@ -50,7 +42,7 @@ public class CartDAO {
     
     // Add item to cart
     public void addToCart(int userId, int productId) throws SQLException {
-        try (Connection conn = getConnection()) {
+        try (Connection conn = DBConnection.getConnection()) {
             // Check if already in cart
             String checkSql = "SELECT quantity FROM cart WHERE user_id = ? AND product_id = ?";
             PreparedStatement checkStmt = conn.prepareStatement(checkSql);
@@ -85,7 +77,7 @@ public class CartDAO {
         }
         
         String sql = "UPDATE cart SET quantity = ? WHERE user_id = ? AND product_id = ?";
-        try (Connection conn = getConnection();
+        try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, quantity);
             stmt.setInt(2, userId);
@@ -97,7 +89,7 @@ public class CartDAO {
     // Remove from cart
     public void removeFromCart(int userId, int productId) throws SQLException {
         String sql = "DELETE FROM cart WHERE user_id = ? AND product_id = ?";
-        try (Connection conn = getConnection();
+        try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, userId);
             stmt.setInt(2, productId);
@@ -108,7 +100,7 @@ public class CartDAO {
     // Clear user's cart
     public void clearCart(int userId) throws SQLException {
         String sql = "DELETE FROM cart WHERE user_id = ?";
-        try (Connection conn = getConnection();
+        try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, userId);
             stmt.executeUpdate();

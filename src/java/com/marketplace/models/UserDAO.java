@@ -1,7 +1,7 @@
 package com.marketplace.models;
 import java.sql.*;
 import com.marketplace.models.User;
-import com.marketplace.utils.DBConnection;
+import com.marketplace.util.DBConnection;
 
 public class UserDAO {
     public boolean updateProfile(User user) {

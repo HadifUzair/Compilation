@@ -76,7 +76,8 @@ public class CheckoutServlet extends HttpServlet {
         
         // Get form data
         String shippingName = request.getParameter("shippingName");
-        String studentId = request.getParameter("studentId");
+        // Student ID is usually immutable/from session, but if form submits it:
+        String studentId = request.getParameter("studentId"); 
         String shippingAddress = request.getParameter("shippingAddress");
         String shippingPhone = request.getParameter("shippingPhone");
         String paymentMethod = request.getParameter("paymentMethod");
@@ -106,26 +107,30 @@ public class CheckoutServlet extends HttpServlet {
             }
             double totalAmount = subtotal + 5.00;
             
-            // Create order
-            int orderId = OrderDAO.createOrder(userId, totalAmount, 
+            // FIX: Use 'orderDAO' (instance) instead of 'OrderDAO' (class)
+            int orderId = orderDAO.createOrder(userId, totalAmount, 
                                               shippingName, shippingAddress, 
                                               shippingPhone, paymentMethod);
             
-            // Add order items
-            orderDAO.addOrderItems(orderId, cartItems);
-            
-            // Mark products as sold
-            orderDAO.markProductsAsSold(cartItems);
-            
-            // Clear cart
-            cartDAO.clearCart(userId);
-            
-            // Store in session
-            session.setAttribute("lastOrderId", orderId);
-            session.setAttribute("paymentMethod", paymentMethod);
-            
-            // Redirect to success page
-            response.sendRedirect("orderSuccess.jsp");
+            if (orderId != -1) {
+                // Add order items
+                orderDAO.addOrderItems(orderId, cartItems);
+                
+                // Mark products as sold
+                orderDAO.markProductsAsSold(cartItems);
+                
+                // Clear cart
+                cartDAO.clearCart(userId);
+                
+                // Store in session
+                session.setAttribute("lastOrderId", orderId);
+                session.setAttribute("paymentMethod", paymentMethod);
+                
+                // Redirect to success page
+                response.sendRedirect("orderSuccess.jsp");
+            } else {
+                throw new Exception("Failed to generate Order ID");
+            }
             
         } catch (Exception e) {
             e.printStackTrace();
