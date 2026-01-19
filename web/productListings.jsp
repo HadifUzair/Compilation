@@ -24,13 +24,15 @@
             
             <aside class="filters">
                 <h3>Filter</h3>
-                <div class="filter-item">Price</div>
-                <div class="filter-item">Stock: In stock</div>
-                <div class="filter-item">Sort: A - Z</div>
+                <a href="ProductListingServlet?sort=price_asc" class="filter-item" style="display:block; text-decoration:none;">Price: Low to High</a>
+                <a href="ProductListingServlet?sort=price_desc" class="filter-item" style="display:block; text-decoration:none;">Price: High to Low</a>
+                <a href="ProductListingServlet?sort=name_asc" class="filter-item" style="display:block; text-decoration:none;">Sort: A - Z</a>
+
                 <div style="margin-top:10px;font-weight:700;color:#555">Categories</div>
-                <div class="filter-item">Books</div>
-                <div class="filter-item">Gadgets</div>
-                <div class="filter-item">Clothing</div>
+                <a href="ProductListingServlet?category=1" class="filter-item" style="display:block; text-decoration:none;">Books</a>
+                <a href="ProductListingServlet?category=2" class="filter-item" style="display:block; text-decoration:none;">Gadgets</a>
+                <a href="ProductListingServlet?category=3" class="filter-item" style="display:block; text-decoration:none;">Clothing</a>
+                <a href="ProductListingServlet" class="filter-item" style="display:block; text-decoration:none; color: red;">Reset Filter</a>
             </aside>
 
             <section class="catalog">

@@ -17,11 +17,19 @@ public class ProductListingServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Use the DAO instance
         ProductDAO dao = new ProductDAO();
-        
-        // Fetch List<Product> instead of Map
-        List<Product> products = dao.getAllProducts();
+        List<Product> products;
+
+        String category = request.getParameter("category");
+        String sort = request.getParameter("sort");
+
+        if (category != null) {
+            products = dao.getProductsByCategory(Integer.parseInt(category));
+        } else if (sort != null) {
+            products = dao.getProductsSorted(sort);
+        } else {
+            products = dao.getAllProducts();
+        }
 
         request.setAttribute("products", products);
         request.getRequestDispatcher("productListings.jsp").forward(request, response);

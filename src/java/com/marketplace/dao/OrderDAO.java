@@ -14,7 +14,6 @@ public class OrderDAO {
      * Create a new order in the database and return the generated Order ID.
      */
     public int createOrder(int userId, double totalAmount, String shippingName, String shippingAddress, String shippingPhone, String paymentMethod) {
-        // Updated SQL to match schema: added shipping_name, shipping_phone, and mapped status to order_status
         String sql = "INSERT INTO orders (user_id, total_amount, shipping_name, shipping_address, shipping_phone, payment_method, order_status, order_date) "
                    + "VALUES (?, ?, ?, ?, ?, ?, 'Pending', CURRENT_TIMESTAMP)";
         
@@ -59,10 +58,8 @@ public class OrderDAO {
             
             for (CartBean item : cartItems) {
                 stmt.setInt(1, orderId);
-                // FIX: Use direct getters from CartBean (no .getProduct())
                 stmt.setInt(2, item.getProductId()); 
                 stmt.setInt(3, item.getQuantity());
-                // FIX: Use direct getter from CartBean
                 stmt.setDouble(4, item.getPrice());
                 stmt.addBatch();
             }
@@ -77,14 +74,12 @@ public class OrderDAO {
      * Mark products as 'sold' so they don't appear in the marketplace anymore.
      */
     public void markProductsAsSold(List<CartBean> cartItems) {
-        // FIX: products table primary key is product_id, not id
         String sql = "UPDATE products SET status = 'Sold' WHERE product_id = ?";
         
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
             for (CartBean item : cartItems) {
-                // FIX: Use direct getter from CartBean
                 stmt.setInt(1, item.getProductId());
                 stmt.addBatch();
             }
@@ -110,18 +105,16 @@ public class OrderDAO {
             
             while (rs.next()) {
                 Order o = new Order();
-                // FIX: Match column names to SQL schema and methods to Order model
                 o.setOrderId(rs.getInt("order_id")); 
                 o.setUserId(rs.getInt("user_id"));
                 o.setTotalAmount(rs.getDouble("total_amount"));
-                o.setStatus(rs.getString("order_status")); // Column is order_status
+                o.setStatus(rs.getString("order_status"));
                 o.setOrderDate(rs.getTimestamp("order_date"));
                 o.setShippingName(rs.getString("shipping_name"));
                 o.setShippingAddress(rs.getString("shipping_address"));
                 o.setShippingPhone(rs.getString("shipping_phone"));
                 o.setPaymentMethod(rs.getString("payment_method"));
                 
-                // Helper to fetch item summary (optional but good for display)
                 o.setItemSummary(getItemSummaryForOrder(conn, o.getOrderId()));
                 
                 list.add(o);
@@ -148,5 +141,34 @@ public class OrderDAO {
         }
         String result = summary.toString();
         return result.isEmpty() ? "No items" : (result.length() > 50 ? result.substring(0, 47) + "..." : result);
+    }
+
+    // NEW METHOD: Required for ViewOrderServlet
+    public List<CartBean> getOrderItems(int orderId) {
+        List<CartBean> items = new ArrayList<>();
+        String sql = "SELECT p.product_id, p.title, p.image_url, oi.quantity, oi.price_at_purchase " +
+                     "FROM order_items oi " +
+                     "JOIN products p ON oi.product_id = p.product_id " +
+                     "WHERE oi.order_id = ?";
+        
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ps.setInt(1, orderId);
+            ResultSet rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                CartBean item = new CartBean();
+                item.setProductId(rs.getInt("product_id"));
+                item.setProductName(rs.getString("title"));
+                item.setImageUrl(rs.getString("image_url"));
+                item.setQuantity(rs.getInt("quantity"));
+                item.setPrice(rs.getDouble("price_at_purchase"));
+                items.add(item);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return items;
     }
 }

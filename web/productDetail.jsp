@@ -78,11 +78,15 @@
           <p><strong>Condition:</strong> ${product.condition}</p>
           <p><strong>Status:</strong> ${product.status}</p>
 
-          <form action="CartServlet" method="post">
-              <input type="hidden" name="action" value="add">
-              <input type="hidden" name="productId" value="${product.productId}">
-              <button type="submit">Add to Cart</button>
-          </form>
+          <div class="actions" style="margin-top: 20px; display: flex; gap: 10px;">
+            <form action="CartServlet" method="post" style="margin: 0;">
+                <input type="hidden" name="action" value="add">
+                <input type="hidden" name="productId" value="${product.productId}">
+                <button type="submit" class="btn-submit" style="width: auto; padding: 12px 25px;">Add to Cart</button>
+            </form>
+    
+                <a href="ProductListingServlet" class="btn-cancel" style="background-color: #e0e0e0; color: #333; padding: 12px 25px; border-radius: 8px; text-decoration: none; font-weight: bold; display: inline-block;">Back to Shop</a>
+        </div>
           
         </div>
 

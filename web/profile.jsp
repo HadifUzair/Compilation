@@ -31,7 +31,7 @@
                 <h2><%= user.getFullName() %></h2>
                 <p style="color: #666;">Student ID: <%= user.getStudentId() %></p>
                 <p>Member since: 2024</p>
-                <a href="#" class="btn-cta" style="padding: 8px 20px; font-size: 0.9rem;">Edit Avatar</a>
+                <button type="button" onclick="alert('Profile picture upload feature is coming soon!')" class="btn-cta" style="padding: 8px 20px; font-size: 0.9rem; cursor: pointer;">Edit Avatar</button>
             </div>
         </div>
 

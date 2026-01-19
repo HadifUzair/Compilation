@@ -89,9 +89,9 @@
                         </div>
                     </div>
                     
-                    <div class="form-group" style="margin-top: 20px;">
-                        <button type="submit" class="btn-submit">Place Order</button>
-                        <a href="cart" class="btn-cancel" style="background: #ccc; color: #333; padding: 10px 20px; border-radius: 5px; text-decoration: none;">Back to Cart</a>
+                    <div class="form-group" style="margin-top: 20px; display: flex; align-items: center; gap: 15px;">
+                        <button type="submit" class="btn-submit" style="width: auto; padding: 12px 30px;">Place Order</button>
+                        <a href="cart" style="background-color: #6c757d; color: white; padding: 12px 25px; border-radius: 8px; text-decoration: none; font-weight: bold; display: inline-block;">Back to Cart</a>
                     </div>
                 </form>
             </div>
