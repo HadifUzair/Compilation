@@ -29,23 +29,30 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <%-- This 'history' list is provided by the HistoryServlet --%>
                         <c:forEach var="order" items="${history}">
                             <tr>
+                                <td>#ORD-${order.orderId}</td>
+                                <td>${order.orderDate}</td>
+                                <td>${order.itemSummary != null ? order.itemSummary : 'Multiple Items'}</td>
+                                <td>RM ${order.totalAmount}</td>
+
                                 <td>
                                     <span class="badge ${order.status == 'Completed' ? 'badge-success' : 'badge-warning'}">
                                         ${order.status}
                                     </span>
-
                                     <c:if test="${order.status != 'Completed' && order.status != 'Sold'}">
-                                        <form action="UpdateOrderServlet" method="post" style="margin-top: 8px;">
+                                        <form action="UpdateOrderServlet" method="post" style="margin-top: 5px;">
                                             <input type="hidden" name="orderId" value="${order.orderId}">
                                             <input type="hidden" name="status" value="Completed">
-                                            <button type="submit" style="background-color: #28a745; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 0.8rem;">
+                                            <button type="submit" style="background-color: #28a745; color: white; border: none; padding: 3px 8px; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">
                                                 Confirm Receipt
                                             </button>
                                         </form>
                                     </c:if>
+                                </td>
+
+                                <td>
+                                    <a href="ViewOrder?id=${order.orderId}" style="color: #6a0dad; font-weight: bold;">View Details</a>
                                 </td>
                             </tr>
                         </c:forEach>
