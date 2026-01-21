@@ -28,8 +28,26 @@ public class UserDAO {
             return false;
         }
     }
+    
+    // NEW METHOD: Update Profile Picture
+    public boolean updateProfilePic(int userId, String imageUrl) {
+        String sql = "UPDATE users SET profile_pic=? WHERE user_id=?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ps.setString(1, imageUrl);
+            ps.setInt(2, userId);
+            
+            int rowsUpdated = ps.executeUpdate();
+            return rowsUpdated > 0;
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
-    // NEW METHOD: Register User
+    // Register User
     public boolean registerUser(User user) {
         String sql = "INSERT INTO users (student_id, full_name, email, password, created_at) "
                    + "VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)";
@@ -54,15 +72,15 @@ public class UserDAO {
     public User loginUser(String email, String password) {
         String sql = "SELECT * FROM users WHERE email = ? AND password = ?";
         User user = null;
-        
+
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            
+
             ps.setString(1, email);
             ps.setString(2, password);
-            
+
             ResultSet rs = ps.executeQuery();
-            
+
             if (rs.next()) {
                 user = new User();
                 user.setUserId(rs.getInt("user_id"));
@@ -72,7 +90,10 @@ public class UserDAO {
                 user.setPassword(rs.getString("password"));
                 user.setPhoneNumber(rs.getString("phone_number"));
                 user.setAddress(rs.getString("address"));
-                // created_at is optional for session
+
+                // --- ADD THIS LINE ---
+                user.setProfilePic(rs.getString("profile_pic")); 
+                // ---------------------
             }
         } catch (SQLException e) {
             e.printStackTrace();

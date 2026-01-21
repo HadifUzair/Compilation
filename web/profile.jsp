@@ -15,6 +15,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Profile | UiTMMarketplace</title>
    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
+   <style>
+       /* Ensure the image fits nicely in the circle */
+       .profile-img img {
+           width: 100%;
+           height: 100%;
+           object-fit: cover;
+           border-radius: 50%;
+       }
+   </style>
 </head>
 <body>
 
@@ -25,13 +34,32 @@
 
         <div class="profile-header">
             <div class="profile-img">
-                <span><%= user.getFullName().substring(0, 1).toUpperCase() %></span>
+                <% if (user.getProfilePic() != null && !user.getProfilePic().isEmpty()) { %>
+                    <img src="<%= user.getProfilePic() %>" alt="Avatar" onerror="this.src='https://via.placeholder.com/150?text=Error';">
+                <% } else { %>
+                    <span><%= user.getFullName().substring(0, 1).toUpperCase() %></span>
+                <% } %>
             </div>
             <div class="profile-info">
                 <h2><%= user.getFullName() %></h2>
                 <p style="color: #666;">Student ID: <%= user.getStudentId() %></p>
                 <p>Member since: 2024</p>
-                <a href="#" class="btn-cta" style="padding: 8px 20px; font-size: 0.9rem;">Edit Avatar</a>
+                
+                <button onclick="editAvatar()" class="btn-cta" style="padding: 8px 20px; font-size: 0.9rem; border:none; cursor:pointer;">Edit Avatar</button>
+                
+                <form id="avatarForm" action="UpdateAvatarServlet" method="POST" style="display:none;">
+                    <input type="hidden" name="avatarUrl" id="avatarUrlInput">
+                </form>
+
+                <script>
+                    function editAvatar() {
+                        let url = prompt("Please enter the URL of your new profile picture:", "<%= (user.getProfilePic() != null) ? user.getProfilePic() : "" %>");
+                        if (url != null && url.trim() !== "") {
+                            document.getElementById("avatarUrlInput").value = url;
+                            document.getElementById("avatarForm").submit();
+                        }
+                    }
+                </script>
             </div>
         </div>
 
@@ -39,7 +67,13 @@
             <h3>Account Details</h3>
             <%-- Success message after update --%>
             <% if(request.getParameter("status") != null) { %>
-                <p style="color: green; margin-bottom: 10px;">Profile updated successfully!</p>
+                <p style="color: green; margin-bottom: 10px;">
+                    <% if(request.getParameter("status").equals("avatar_updated")) { %>
+                        Avatar updated successfully!
+                    <% } else { %>
+                        Profile updated successfully!
+                    <% } %>
+                </p>
             <% } %>
 
             <form action="UpdateProfileServlet" method="POST" class="profile-grid">
@@ -57,7 +91,11 @@
                 </div>
                 <div class="form-group">
                     <label>Phone Number</label>
-                    <input type="tel" name="phone" value="<%= user.getPhoneNumber() %>">
+                    <input type="tel" name="phone" value="<%= user.getPhoneNumber() != null ? user.getPhoneNumber() : "" %>">
+                </div>
+                <div class="form-group">
+                    <label>Address</label>
+                    <input type="text" name="address" value="<%= user.getAddress() != null ? user.getAddress() : "" %>">
                 </div>
                
                 <div style="margin-top: 20px; text-align: right; grid-column: 1 / -1;">

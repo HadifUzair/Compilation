@@ -10,14 +10,13 @@
   <style>
     body {
       margin: 0;
-     
       min-height: 100vh;
       background: linear-gradient(180deg, #6b1dbb, #7b2bd6);
       font-family: Arial, Helvetica, sans-serif;
       
-      display: flex;             
-      justify-content: center;   
-      align-items: center;       
+      display: flex;              
+      justify-content: center;    
+      align-items: center;        
     }
 
     .container {
@@ -26,7 +25,7 @@
       background: white;
       border-radius: 12px;
       padding: 30px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2); /* Adds a nice shadow for depth */
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     }
 
     .detail {
@@ -35,14 +34,23 @@
       align-items: flex-start;
     }
 
+    /* --- UPDATED CSS STARTS HERE --- */
+    .thumb {
+      /* Optional: defines the size of the container explicitly */
+      width: 500px; 
+      height: 500px;
+      flex-shrink: 0; /* Prevents the image from shrinking if text is long */
+    }
+
     .thumb img {
-      width: 300px;
-      height: 470px;
-      object-fit: cover;
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* Ensures image fills the square without distortion */
       border-radius: 8px;
       border: 1px solid #eae6f6;
       display: block;
     }
+    /* --- UPDATED CSS ENDS HERE --- */
 
     .info {
       flex: 1;
@@ -104,10 +112,9 @@
       <div class="detail">
 
         <div class="thumb">
-          <img src="${pageContext.request.contextPath}/images/${product.imageUrl}" 
-               alt="${product.title}" 
-               onerror="this.src='https://via.placeholder.com/300'">
-        </div>
+            <img src="${product.imageUrl}" 
+                 alt="${product.title}" 
+                 onerror="this.src='https://via.placeholder.com/500'"> </div>
 
         <div class="info">
           <h2>${product.title}</h2>
