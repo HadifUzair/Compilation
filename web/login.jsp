@@ -13,29 +13,37 @@
             <a href="index.jsp" style="color: white;"><span>UiTM</span>Marketplace</a>
         </div>
         <ul class="nav-links">
-            <li><a href="index.jsp">Home</a></li>
-            <li><a href="cart">Cart</a></li>
-            <li><a href="HistoryServlet">History</a></li>
-            <li><a href="profile.jsp" style="color: #ffbf00;">Profile</a></li>
             <li><a href="register.jsp" class="btn-login-nav">Register</a></li>
         </ul>
     </nav>
 
     <section class="auth-wrapper">
-        <div class="auth-card">
-            <h2>Welcome Back</h2>
-            
-            <% if ("registered".equals(request.getParameter("status"))) { %>
-                <div style="color: green; text-align: center; margin-bottom: 15px;">
-                    Registration successful! Please log in.
-                </div>
-            <% } %>
+        
+    <div class="auth-card">
+    <h2>Welcome Back</h2>
+    
+    <%-- EXISTING REGISTER SUCCESS MESSAGE --%>
+    <% if ("registered".equals(request.getParameter("status"))) { %>
+        <div style="color: green; text-align: center; margin-bottom: 15px;">
+            Registration successful! Please log in.
+        </div>
+    <% } %>
 
-            <% if (request.getAttribute("errorMessage") != null) { %>
-                <div style="color: red; text-align: center; margin-bottom: 15px;">
-                    <%= request.getAttribute("errorMessage") %>
-                </div>
-            <% } %>
+    <%-- NEW LOGOUT SUCCESS MESSAGE --%>
+    <% if ("logout".equals(request.getParameter("status"))) { %>
+        <div style="color: green; text-align: center; margin-bottom: 15px; font-weight: bold;">
+            You have successfully logged out.
+        </div>
+    <% } %>
+
+    <%-- ERROR MESSAGE --%>
+    <% if (request.getAttribute("errorMessage") != null) { %>
+        <div style="color: red; text-align: center; margin-bottom: 15px;">
+            <%= request.getAttribute("errorMessage") %>
+        </div>
+    <% } %>
+
+    <form action="login" method="post">
 
             <form action="login" method="post">
                 <div class="form-group">

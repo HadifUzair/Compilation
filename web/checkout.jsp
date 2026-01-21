@@ -47,7 +47,7 @@
             <div class="checkout-form">
                 <form action="checkout" method="post">
                     <div class="section-box">
-                        <h3>Shipping Information</h3>
+                        <h3>Pickup Information</h3>
                         <div class="form-group">
                             <label>Full Name *</label>
                             <input type="text" name="shippingName" 
@@ -61,16 +61,34 @@
                                    placeholder="2023xxxxxx" required>
                         </div>
                         <div class="form-group">
-                            <label>College/Faculty Address *</label>
+                            <label>Pickup Address *</label>
                             <input type="text" name="shippingAddress" 
-                                   value="<%= session.getAttribute("address") != null ? session.getAttribute("address") : "" %>" 
-                                   placeholder="Kolej Mawar, UiTM Shah Alam..." required>
+                                   value="UiTM Marketplace Center" 
+                                   readonly
+                                   style="background-color: #f5f5f5; font-weight: bold;"
+                                   required>
+                            <small style="color: #666; display: block; margin-top: 5px;">
+                                All items will be picked up at this location
+                            </small>
                         </div>
                         <div class="form-group">
                             <label>Phone Number *</label>
                             <input type="tel" name="shippingPhone" 
                                    value="<%= session.getAttribute("phone") != null ? session.getAttribute("phone") : "" %>" 
                                    placeholder="012-3456789" required>
+                        </div>
+                        
+                        <!-- Pickup Information Box -->
+                        <div style="background-color: #f8f9fa; border-left: 4px solid #6a0dad; padding: 15px; margin-top: 20px; border-radius: 5px;">
+                            <h4 style="color: #6a0dad; margin-top: 0;">📍 Pickup Location Details:</h4>
+                            <p style="margin: 5px 0;"><strong>UiTM Marketplace Center</strong></p>
+                            <p style="margin: 5px 0; color: #555;">Student Hub, Level 2, Main Building, UiTM Shah Alam</p>
+                            <p style="margin: 5px 0; color: #555;">
+                                <strong>Hours:</strong> Monday-Friday: 9:00 AM – 5:00 PM, Saturday: 10:00 AM – 2:00 PM
+                            </p>
+                            <p style="margin: 5px 0; color: #555;">
+                                <strong>Note:</strong> Bring your student ID for verification when picking up items.
+                            </p>
                         </div>
                     </div>
 
@@ -84,7 +102,7 @@
                             <br>
                             <label>
                                 <input type="radio" name="paymentMethod" value="COD"> 
-                                Cash on Delivery (Campus Meetup)
+                                Cash on Pickup
                             </label>
                         </div>
                     </div>
@@ -113,6 +131,16 @@
                     <div class="summary-row summary-total">
                         <span>Total Pay</span>
                         <span>RM <%= df.format(total) %></span>
+                    </div>
+                    
+                    <!-- How Campus Pickup Works -->
+                    <div style="margin-top: 25px; padding-top: 15px; border-top: 1px dashed #ddd;">
+                        <h4 style="color: #6a0dad; margin-bottom: 10px;">📋 How Campus Pickup Works:</h4>
+                        <ol style="margin: 0; padding-left: 20px; color: #555;">
+                            <li>Place your order and make payment</li>
+                            <li>Seller delivers item to UiTM Marketplace Center after 3 days (working days only)</li>
+                            <li>Pick up your item at the center during operating hours</li>
+                        </ol>
                     </div>
                 </div>
             </div>

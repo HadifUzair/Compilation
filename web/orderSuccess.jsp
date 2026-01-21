@@ -57,11 +57,11 @@
                 <% } %>
             </p>
             
-            <p>You can track your order in <a href="purchase_history.jsp">Purchase History</a>.</p>
+            <p>You can track your order in <a href="HistoryServlet">Purchase History</a>.</p>
             
             <div style="margin-top: 30px;">
                 <a href="ProductListingServlet" class="btn-submit">Continue Shopping</a>
-                <a href="purchase_history.jsp" class="btn-cancel" style="background: #ccc; color: #333; padding: 10px 20px; border-radius: 5px; text-decoration: none;">View Orders</a>
+                <a href="HistoryServlet" class="btn-cancel" style="background: #ccc; color: #333; padding: 10px 20px; border-radius: 5px; text-decoration: none;">View Orders</a>
             </div>
         </div>
     </div>

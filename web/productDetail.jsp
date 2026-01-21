@@ -3,69 +3,110 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Marketplace — Product Detail</title>
+  <title>${product.title} | Marketplace</title>
+
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
 
   <style>
-    body{
+    body {
       margin: 0;
+     
+      min-height: 100vh;
       background: linear-gradient(180deg, #6b1dbb, #7b2bd6);
       font-family: Arial, Helvetica, sans-serif;
+      
+      display: flex;             
+      justify-content: center;   
+      align-items: center;       
     }
-    header{
-      display: flex;
-      justify-content: space-between;
-      padding: 14px 22px;
-      color: white;
-    }
-    .container{
-      max-width: 1000px;
-      margin: 26px auto;
+
+    .container {
+      width: 100%;
+      max-width: 900px;
       background: white;
-      border-radius: 10px;
-      padding: 18px;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2); /* Adds a nice shadow for depth */
     }
-    .detail{
+
+    .detail {
       display: flex;
-      gap: 18px;
+      gap: 30px;
+      align-items: flex-start;
     }
-    .thumb img{
+
+    .thumb img {
       width: 300px;
-      height: 300px;
+      height: 470px;
       object-fit: cover;
       border-radius: 8px;
       border: 1px solid #eae6f6;
+      display: block;
     }
-    .price{
+
+    .info {
+      flex: 1;
+    }
+
+    .price {
       color: #6b1dbb;
       font-weight: bold;
-      font-size: 20px;
+      font-size: 24px;
+      margin-bottom: 10px;
     }
-    /* Simple button style */
-    button {
+
+    h2 { margin-top: 0; }
+
+    /* BUTTON STYLES */
+    .btn-group {
+        display: flex;
+        gap: 10px; 
+        margin-top: 20px;
+    }
+
+    .btn-cart {
         background-color: #6b1dbb;
         color: white;
         border: none;
-        padding: 10px 20px;
-        border-radius: 5px;
+        padding: 12px 24px;
+        border-radius: 6px;
         cursor: pointer;
         font-size: 16px;
-        margin-top: 10px;
+        font-weight: bold;
+        transition: background 0.2s;
     }
-    button:hover {
+    .btn-cart:hover {
         background-color: #5a189a;
     }
+
+    .btn-back {
+        background-color: #e0e0e0; /* Light gray */
+        color: #333;
+        text-decoration: none; 
+        padding: 12px 24px;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: bold;
+        display: inline-block;
+        transition: background 0.2s;
+        border: none;
+    }
+    .btn-back:hover {
+        background-color: #ccc;
+    }
+
   </style>
 </head>
 
 <body>
 
-    <jsp:include page="navbar.jsp" />
-
     <div class="container">
       <div class="detail">
 
         <div class="thumb">
-          <img src="${product.imageUrl}" alt="${product.title}" onerror="this.src='https://via.placeholder.com/300'">
+          <img src="${pageContext.request.contextPath}/images/${product.imageUrl}" 
+               alt="${product.title}" 
+               onerror="this.src='https://via.placeholder.com/300'">
         </div>
 
         <div class="info">
@@ -78,15 +119,15 @@
           <p><strong>Condition:</strong> ${product.condition}</p>
           <p><strong>Status:</strong> ${product.status}</p>
 
-          <div class="actions" style="margin-top: 20px; display: flex; gap: 10px;">
-            <form action="CartServlet" method="post" style="margin: 0;">
-                <input type="hidden" name="action" value="add">
-                <input type="hidden" name="productId" value="${product.productId}">
-                <button type="submit" class="btn-submit" style="width: auto; padding: 12px 25px;">Add to Cart</button>
-            </form>
-    
-                <a href="ProductListingServlet" class="btn-cancel" style="background-color: #e0e0e0; color: #333; padding: 12px 25px; border-radius: 8px; text-decoration: none; font-weight: bold; display: inline-block;">Back to Shop</a>
-        </div>
+          <div class="btn-group">
+              <form action="CartServlet" method="post">
+                  <input type="hidden" name="action" value="add">
+                  <input type="hidden" name="productId" value="${product.productId}">
+                  <button type="submit" class="btn-cart">Add to Cart</button>
+              </form>
+
+              <a href="ProductListingServlet" class="btn-back">Back to Shop</a>
+          </div>
           
         </div>
 

@@ -31,7 +31,7 @@
                 <h2><%= user.getFullName() %></h2>
                 <p style="color: #666;">Student ID: <%= user.getStudentId() %></p>
                 <p>Member since: 2024</p>
-                <button type="button" onclick="alert('Profile picture upload feature is coming soon!')" class="btn-cta" style="padding: 8px 20px; font-size: 0.9rem; cursor: pointer;">Edit Avatar</button>
+                <a href="#" class="btn-cta" style="padding: 8px 20px; font-size: 0.9rem;">Edit Avatar</a>
             </div>
         </div>
 
@@ -59,10 +59,7 @@
                     <label>Phone Number</label>
                     <input type="tel" name="phone" value="<%= user.getPhoneNumber() %>">
                 </div>
-                <div class="form-group" style="grid-column: 1 / -1;">
-                    <label>Default Pickup Address (College)</label>
-                    <input type="text" name="address" value="<%= user.getAddress() %>">
-                </div>
+               
                 <div style="margin-top: 20px; text-align: right; grid-column: 1 / -1;">
                     <button type="submit" class="btn-submit" style="width: auto; padding: 10px 30px;">Save Changes</button>
                 </div>

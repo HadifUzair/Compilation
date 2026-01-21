@@ -8,7 +8,14 @@
 </head>
 <body>
 
-    <jsp:include page="navbar.jsp" />
+   <nav class="navbar">
+        <div class="logo">
+            <a href="index.jsp" style="color: white;"><span>UiTM</span>Marketplace</a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="register.jsp" class="btn-login-nav">Register</a></li>
+        </ul>
+    </nav>
 
     <section class="auth-wrapper">
         <div class="auth-card">
